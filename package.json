@@ -4,11 +4,12 @@
   "description": "A standalone IE-friendly mod of the punycode@2.0.0 lib",
   "main": "punycode.js",
   "scripts": {
-    "babel": "mkdirp dist/babel && babel ./node_modules/punycode/punycode.js --out-file dist/babel/punycode.js --presets es2015 --plugins transform-runtime",
-    "r-runtime": "node node_modules/requirejs/bin/r.js -convert node_modules/babel-runtime/ dist/r/babel-runtime",
-    "r-punycode": "node node_modules/requirejs/bin/r.js -convert dist/babel dist/r",
-    "opt": "node node_modules/requirejs/bin/r.js -o baseUrl=./dist/r name=punycode out=./dist/standalone/punycode.js paths.core-js=babel-runtime/node_modules/core-js optimize=none",
-    "all": "npm run babel && npm run r-runtime && npm run r-punycode && npm run opt",
+    "babel-punycode": "mkdirp dist && babel ./node_modules/punycode/punycode.js --out-file dist/punycode.js --presets es2015 --plugins transform-runtime",
+    "convert-punycode": "node node_modules/requirejs/bin/r.js -convert dist dist",
+    "name-punycode": "sed -i \"1s/^define(function\\(.*\\)$/define('punycode', function\\1/\" dist/punycode.js",
+    "convert-runtime": "node node_modules/requirejs/bin/r.js -convert node_modules/babel-runtime/ dist/babel-runtime",
+    "optimize-punycode": "node node_modules/requirejs/bin/r.js -o baseUrl=./dist name=punycode out=./dist/punycode.js paths.core-js=babel-runtime/node_modules/core-js optimize=none",
+    "all": "npm run babel-punycode && npm run convert-punycode && npm run name-punycode && npm run convert-runtime && npm run optimize-punycode",
     "full": "npm install && npm run all",
     "clean": "rm -rf dist",
     "uninstall": "npm run clean && rm -rf node_modules"
